@@ -1,5 +1,6 @@
 import numpy as np
 from pathlib import Path
+import pdb
 
 class Mcep_class:
     def __init__(self, filename, word, frame, framedata):
@@ -9,8 +10,8 @@ class Mcep_class:
         self.framedata = framedata
 
 template_data_location = "city011"
-test_data_location = "city012"
-
+test_data_location = "city021"
+# pdb.set_trace()
 def filetouch(path):
     print(path)
     with open(path, "r") as f:
@@ -21,8 +22,7 @@ def filetouch(path):
         for x in framedatas:
             print(x)
             framedata_list.append([float(x) for x in x.split()]) # float型に一括変換
-        print(framedata_list)
-    return Mcep_class(lines_strip[0], lines_strip[1], lines_strip[2], framedata_list)
+    return Mcep_class(lines_strip[0], lines_strip[1], lines_strip[2], np.array(framedata_list))
 
 def readfiles(data_location):
     data_lists = []
