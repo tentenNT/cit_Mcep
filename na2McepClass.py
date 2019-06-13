@@ -2,25 +2,43 @@ import numpy as np
 from pathlib import Path
 
 class Mcep_class:
-    def __init__(self, word, frame, dimension):
+    def __init__(self, filename, word, frame, framedata):
+        self.filename = filename
         self.word = word
         self.frame = frame
-        self.dimension = dimension
+        self.framedata = framedata
 
 template_data_location = "city011"
 test_data_location = "city012"
 
+def filetouch(path):
+    print(path)
+    with open(path, "r") as f:
+        lines = f.readlines()
+        lines_strip = [line.strip() for line in lines]
+        framedatas = lines_strip[3:] # この時点では\nで区切られた1次元リスト
+        framedata_list = []
+        for x in framedatas:
+            print(x)
+            framedata_list.append([float(x) for x in x.split()]) # float型に一括変換
+        print(framedata_list)
+    return Mcep_class(lines_strip[0], lines_strip[1], lines_strip[2], framedata_list)
+
 def readfiles(data_location):
+    data_lists = []
     for i in range(1, 101):
         if i < 10:
-            yield Path(data_location+"/" + data_location + "_00{}.txt".format(i))
+            path = "./" + data_location+"/" + data_location + "_00{}.txt".format(i)
+            data_lists.append(filetouch(path))
         elif i < 100:
-            yield Path(data_location+"/" + data_location + "_0{}.txt".format(i))
+            path = str("./" + data_location+"/" + data_location + "_0{}.txt".format(i))
+            filetouch(path)
         else:
-            yield Path(data_location+"/" + data_location + "_{}.txt".format(i))
- 
+            path = str("./" + data_location+"/" + data_location + "_{}.txt".format(i))
+            filetouch(path)
+    return data_lists
+
+
 # 読み込み方
-# template_data_list = list(readfiles(template_data_location))
-# test_data_list = list(readfiles(test_data_location))
-
-
+# template_data_list = readfiles(template_data_location)
+# test_data_list = readfiles(test_data_location)
