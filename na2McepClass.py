@@ -32,10 +32,10 @@ def readfiles(data_location):
             data_lists.append(filetouch(path))
         elif i < 100:
             path = str("./" + data_location+"/" + data_location + "_0{}.txt".format(i))
-            filetouch(path)
+            data_lists.append(filetouch(path))
         else:
             path = str("./" + data_location+"/" + data_location + "_{}.txt".format(i))
-            filetouch(path)
+            data_lists.append(filetouch(path))
     return data_lists
 
 
