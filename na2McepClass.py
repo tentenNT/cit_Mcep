@@ -3,8 +3,8 @@ from pathlib import Path
 import pdb
 
 # 単語数，データロケーションの指定
-WORD_SIZE = 50
-template_data_location = "city011"
+WORD_SIZE = 100
+template_data_location = "city022"
 test_data_location = "city021"
 
 

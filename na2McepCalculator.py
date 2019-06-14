@@ -6,19 +6,19 @@ import pdb
 
 # フレーム同士での局所間距離計算を行う関数
 def distance_checker(template_data, test_data):
-    print(template_data.word, test_data.word)
-    distance_array_frames = np.zeros((len(template_data.framedata), len(test_data.framedata)))
-
+#    print(template_data.word, test_data.word)
+    distance_array_frames = np.zeros((len(template_data.framedata), len(test_data.framedata)), dtype="float16")
+    
     for i in range(len(template_data.framedata)):
         for j in range((len(test_data.framedata))):
             distance_array_frames[i][j] = np.linalg.norm(template_data.framedata[i] - test_data.framedata[j])
-
     return distance_array_frames
 
 
 # main部
 template_data_list = mclass.readfiles(mclass.template_data_location)
 test_data_list = mclass.readfiles(mclass.test_data_location)
+counter = 0
 
 # 例: print(template_data_list[2].framedata[0][4])
 # これでcity011_003.textの0フレーム目の3次元目を指す
@@ -27,7 +27,9 @@ test_data_list = mclass.readfiles(mclass.test_data_location)
 distance_list = [[] for i in range(WORD_SIZE)]
 for i, template_data in enumerate(template_data_list[:WORD_SIZE]):
     for j, test_data in enumerate(test_data_list[:WORD_SIZE]):
-        distance_list[i].append(distance_checker(template_data, test_data)) # appendを使うのでjは不要
+        distance_list[i].append(distance_checker(template_data, test_data))# appendを使うのでjは不要
+    counter += 1
+    print("{}%完了".format(counter))
 distance_array = np.array(distance_list)
 
 # 毎回計算すると大変なのでnpy形式で全ての単語同士での局所間距離を保存
