@@ -62,5 +62,6 @@ for i, template_data in enumerate(template_data_list[:3]):
 print("test")
 print(distance_list)
 distance_array = np.array(distance_list)
-pdb.set_trace()
+# pdb.set_trace()
+np.save("distance_array.npy", distance_array)
 # print(distance_list[99][5])
