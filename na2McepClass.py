@@ -2,6 +2,12 @@ import numpy as np
 from pathlib import Path
 import pdb
 
+# 単語数，データロケーションの指定
+WORD_SIZE = 50
+template_data_location = "city011"
+test_data_location = "city021"
+
+
 class Mcep_class:
     def __init__(self, filename, word, frame, framedata):
         self.filename = filename
@@ -9,9 +15,8 @@ class Mcep_class:
         self.frame = frame
         self.framedata = framedata
 
-template_data_location = "city011"
-test_data_location = "city021"
-# pdb.set_trace()
+
+# データを使いやすい形に直す関数
 def filetouch(path):
     print(path)
     with open(path, "r") as f:
@@ -24,6 +29,8 @@ def filetouch(path):
             framedata_list.append([float(x) for x in x.split()]) # float型に一括変換
     return Mcep_class(lines_strip[0], lines_strip[1], lines_strip[2], np.array(framedata_list))
 
+
+# データ読み込み用の関数
 def readfiles(data_location):
     data_lists = []
     for i in range(1, 101):
@@ -37,8 +44,3 @@ def readfiles(data_location):
             path = str("./" + data_location+"/" + data_location + "_{}.txt".format(i))
             data_lists.append(filetouch(path))
     return data_lists
-
-
-# 読み込み方
-# template_data_list = readfiles(template_data_location)
-# test_data_list = readfiles(test_data_location)

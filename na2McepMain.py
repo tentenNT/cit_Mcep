@@ -1,8 +1,13 @@
 import numpy as np
 import na2McepClass
+from na2McepClass import WORD_SIZE
 import pdb
 
+# 斜め移動の距離
+SLIDING = 2
 
+
+# DPマッチングのアルゴリズムを扱う関数
 def dpmatching(d):
     g = np.zeros((d.shape[0], d.shape[1]))
     g[0][0] = d[0][0]
@@ -15,20 +20,34 @@ def dpmatching(d):
 
     for i in range(1, d.shape[0]):
         for j in range(1, d.shape[1]):
-            g_temp = np.array([g[i][j-1] + d[i][j], g[i-1][j-1] + 2*d[i][j], g[i-1][j] + d[i][j]])
+            g_temp = np.array([g[i][j-1] + d[i][j], g[i-1][j-1] + SLIDING*d[i][j], g[i-1][j] + d[i][j]])
             g[i][j] = g_temp.min()
 
     distance_of_words = g[i][j] / (d.shape[0]+d.shape[1])
     return distance_of_words
 
 
-# main
+# 何%がラベルと一致しているかを確認する関数
+def dw_checker(dw_array):
+    count = 0
+    label_array = np.array(range(WORD_SIZE))
+    ans_array = np.argmin(dw_array, axis=1)
 
+    for x,y in zip(label_array, ans_array):
+        if x == y:
+            count += 1
+    print("{}%正解".format(count))
+
+
+# main部
 distance_array = np.load("distance_array.npy")
-distance_of_words_array = np.zeros((3,3))
+distance_of_words_array = np.zeros((WORD_SIZE, WORD_SIZE))
+x = 0
 
 for i in range(distance_array.shape[0]):
     for j in range(distance_array.shape[1]):
         distance_of_words_array[i][j] = dpmatching(distance_array[i][j])
+    x += 1
+    print("{}% done".format(x))
 
-pdb.set_trace()
+dw_checker(distance_of_words_array)
