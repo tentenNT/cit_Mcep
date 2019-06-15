@@ -6,7 +6,8 @@ from joblib import Parallel, delayed
 from time import time
 
 # 斜め移動の距離
-SLIDING = 2
+# SLIDING = 2
+SLIDING = np.sqrt(2)
 
 start = time()
 
