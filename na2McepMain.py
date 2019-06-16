@@ -6,8 +6,8 @@ from joblib import Parallel, delayed
 from time import time
 
 # 斜め移動の距離
-# SLIDING = 2
-SLIDING = np.sqrt(2)
+SLIDING = 2
+# SLIDING = np.sqrt(2)
 
 start = time()
 
@@ -26,9 +26,9 @@ def dpmatching(d):
         for j in range(1, d.shape[1]):
             g_temp = np.array([g[i][j-1] + d[i][j], g[i-1][j-1] + SLIDING*d[i][j], g[i-1][j] + d[i][j]])
             g[i][j] = g_temp.min()
-
+    np.savetxt("g.csv", g, delimiter=",")
     distance_of_words = g[i][j] / (d.shape[0]+d.shape[1])
-    return distance_of_words
+    return distance_of_words 
 
 
 # 何%がラベルと一致しているかを確認する関数
