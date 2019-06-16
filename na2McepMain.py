@@ -2,10 +2,13 @@ import numpy as np
 import na2McepClass
 from na2McepClass import WORD_SIZE
 import pdb
+from joblib import Parallel, delayed
+from time import time
 
 # 斜め移動の距離
 SLIDING = 2
 
+start = time()
 
 # DPマッチングのアルゴリズムを扱う関数
 def dpmatching(d):
@@ -36,6 +39,8 @@ def dw_checker(dw_array):
     for x,y in zip(label_array, ans_array):
         if x == y:
             count += 1
+        else:
+            print("{}番がマッチング失敗".format(x))
     print("{}%正解".format(count))
 
 
@@ -45,9 +50,13 @@ distance_of_words_array = np.zeros((WORD_SIZE, WORD_SIZE))
 x = 0
 
 for i in range(distance_array.shape[0]):
-    for j in range(distance_array.shape[1]):
-        distance_of_words_array[i][j] = dpmatching(distance_array[i][j])
+    q = Parallel(n_jobs=-1)([delayed(dpmatching)(distance_array[i][j]) for j in range(distance_array.shape[1])])
+    distance_of_words_array[i, :] = q
+#     for j in range(distance_array.shape[1]):
+#         distance_of_words_array[i][j] = dpmatching(distance_array[i][j])
     x += 1
     print("{}% done".format(x))
 
 dw_checker(distance_of_words_array)
+
+print("{}秒かかりました".format(time() - start))
